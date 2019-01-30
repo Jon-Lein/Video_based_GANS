@@ -1,16 +1,25 @@
 import cv2
 
-source_video = 'SampleVideo.mp4'
-save_directory = 'C:\\Users\\User\\Desktop\\Video Frames\\'
+source_video = ''
+save_directory = ''
+
+frequency = 201
 
 cap = cv2.VideoCapture(source_video)
+frames = (cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+print("===Generating " + str(int(frames / frequency)) + " Frames===")
 
 i, image = cap.read()
 count = 0
 
 while i:
-    cv2.imwrite(save_directory + 'Video Frames '+ str(count) + '.jpg', image)
     count += 1
     i, image = cap.read()
 
-print('Total Frames: ' + str(count))
+    if count % frequency == 0:
+        cv2.imwrite(save_directory + 'Video Frames ' + str(count) + '.jpg', image)
+        print("Frame " + str(count) + " out of " + str(frames) + str("(") + str((count / frames) * 100) + "%)")
+
+
+print('Done. Saved to ' + save_directory)
